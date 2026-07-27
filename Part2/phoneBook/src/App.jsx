@@ -4,13 +4,15 @@ import Filter from './components/filter.jsx'
 import PersonForm from './components/PersonForm.jsx'
 import People from './components/People.jsx'
 import service from './service/people.js'
-import people from './service/people.js'
+import Notification from './components/Notification.jsx'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [searchName, setNewSearchName] = useState('')
+  const [addedPersonMessage, setAddedPersonMessage] = useState('')
+  const [notificationType, setNotificationType] = useState('')
 
   useEffect(() => {
   service
@@ -21,19 +23,26 @@ const App = () => {
   }, [])
 
 
-  const addName = (event) => {
+  const handlePersonSubmit = (event) => {
     event.preventDefault()
     const duplicatePerson = persons.find(person => person.name === newName)
     if (duplicatePerson !== undefined){
 
       if (window.confirm(`${duplicatePerson.name}, is already in the phonbebook, replace the old number with a new one?`)) {
         const updatedPerson = {...duplicatePerson, number: newNumber }
+        console.log('updated person', updatedPerson)
         return service
           .update(duplicatePerson.id, updatedPerson)
           .then(updatedPerson => {
+            console.log('we are in the promise', updatedPerson)
             setPersons(persons => persons.map(person => person.id === duplicatePerson.id ? updatedPerson : person))
             setNewName('')
             setNewNumber('')
+          })
+          .catch(error => {
+            console.log('we are in the catch', error)
+            setAddedPersonMessage(`Information of ${updatedPerson.name} has already been removed from server`)
+            setNotificationType('error')
           })
       }
     }
@@ -48,6 +57,8 @@ const App = () => {
     .then(createdPerson => {
       console.log("Inside the post")
       setPersons(persons.concat(createdPerson))
+      setAddedPersonMessage(`Added ${createdPerson.name}`)
+      setNotificationType('success')
       setNewName('')
       setNewNumber('')
     })
@@ -74,10 +85,11 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={addedPersonMessage} type={notificationType}/>
       <Filter searchName={searchName} setSearchName={setNewSearchName}/>
 
       <h3>add a new</h3>
-      <PersonForm addName={addName} newName={newName} newNumber={newNumber} 
+      <PersonForm handlePersonSubmit={handlePersonSubmit} newName={newName} newNumber={newNumber} 
       setNewName={setNewName} setNewNumber={setNewNumber}/>
 
       <h2>Numbers</h2>
