@@ -11,6 +11,7 @@ const Countries = ({ countries, countryFilter, showHandler }) => {
             key={country.name.official}
             country={country}
             singleCountry={false}
+            showHandler={() => showHandler(country)}
           />
         ))}
       </div>
@@ -22,7 +23,7 @@ const Countries = ({ countries, countryFilter, showHandler }) => {
 
   } 
   else if (countries.length > 1) {
-    
+
     return (
       <div>
         {countries.map((country) => (

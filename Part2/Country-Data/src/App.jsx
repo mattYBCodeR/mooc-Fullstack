@@ -21,6 +21,7 @@ const countriesToShow = countryFilter
   ? countries.filter(country => country.name.common.toLowerCase().includes(countryFilter.toLowerCase()))
   : countries.filter(country => country.name.common.toLowerCase())
 
+  // Not needed, can just pass setCountry directly to the showHandler prop
   const showHandler = (country) => {
     setCountry(country)
   }
@@ -35,8 +36,14 @@ const countriesToShow = countryFilter
 
   return (
     <div>
-      <Filter countryFilter={countryFilter} setCountryFilter={setCountryFilter}/>
-      <Countries countries={countriesToShow} countryFilter={countryFilter} showHandler={showHandler}/>
+      <Filter 
+      countryFilter={countryFilter} 
+      setCountryFilter={setCountryFilter}
+      />
+      <Countries countries={countriesToShow} 
+      countryFilter={countryFilter} 
+      showHandler={setCountry}
+      />
     </div>
   
   )
