@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react'
 import service from './services/countries.js'
 import Filter from './components/Filter.jsx'
 import Countries from './components/Countries.jsx'
+import Country from './components/Country.jsx'
 
 function App() {
-  const [country, setCountry] = useState(0)
+  const [country, setCountry] = useState(null)
   const [countries, setCountries] = useState([])
   const [countryFilter, setCountryFilter] = useState('')
 
@@ -20,10 +21,22 @@ const countriesToShow = countryFilter
   ? countries.filter(country => country.name.common.toLowerCase().includes(countryFilter.toLowerCase()))
   : countries.filter(country => country.name.common.toLowerCase())
 
+  const showHandler = (country) => {
+    setCountry(country)
+  }
+
+  if (country) {
+    return (
+      <div>
+        <Country country={country} singleCountry={true}/>
+      </div>
+    )
+  }
+
   return (
     <div>
       <Filter countryFilter={countryFilter} setCountryFilter={setCountryFilter}/>
-      <Countries countries={countriesToShow} countryFilter={countryFilter}/>
+      <Countries countries={countriesToShow} countryFilter={countryFilter} showHandler={showHandler}/>
     </div>
   
   )

@@ -1,6 +1,6 @@
 import Country from "./Country";
 
-const Countries = ({ countries, countryFilter }) => {
+const Countries = ({ countries, countryFilter, showHandler }) => {
   if (!countryFilter) {
 
     return (
@@ -15,11 +15,14 @@ const Countries = ({ countries, countryFilter }) => {
         ))}
       </div>
     );
+
   } 
   else if (countries.length > 10) {
     return <div>Too many countriers were matched, specify a more specific filter</div>;
+
   } 
   else if (countries.length > 1) {
+    
     return (
       <div>
         {countries.map((country) => (
@@ -27,6 +30,7 @@ const Countries = ({ countries, countryFilter }) => {
             key={country.name.official}
             country={country}
             singleCountry={false}
+            showHandler={() => showHandler(country)}
           />
         ))}
       </div>
@@ -45,6 +49,7 @@ const Countries = ({ countries, countryFilter }) => {
       </div>
     );
   }
+  
 };
 
 export default Countries;

@@ -1,6 +1,9 @@
-const Country = ({ country, singleCountry = false }) => {
+const Country = ({ country, singleCountry = false, showHandler }) => {
   if (!singleCountry) {
-    return <div>{country.name.common}</div>;
+    return <div>
+      {country.name.common}
+      <button onClick={() => showHandler()}>Show</button>
+      </div>;
   } 
 
   else {
