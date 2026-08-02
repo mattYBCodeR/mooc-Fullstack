@@ -1,4 +1,26 @@
+import { useState, useEffect } from 'react'
+import weatherService from '../services/weather.js'
+import CountryInfo from './CountryInfo.jsx'
+import Weather from './Weather.jsx'
+
 const Country = ({ country, singleCountry = false, showHandler }) => {
+  const [weather, setWeather] = useState(null);
+
+  useEffect(() => {
+    if (!singleCountry) return
+
+      const lat = country.capitalInfo.latlng[0];
+      const lon = country.capitalInfo.latlng[1];
+
+      weatherService
+        .getWeather(lat, lon)
+        .then(weather => {
+          console.log('weather', weather)
+          setWeather(weather)
+        })
+    
+  }, [singleCountry]);
+
   if (!singleCountry) {
     return <div>
       {country.name.common}
@@ -7,20 +29,12 @@ const Country = ({ country, singleCountry = false, showHandler }) => {
   } 
 
   else {
-    const languages = country.languages ? Object.values(country.languages) : [];
+
 
     return (
       <div>
-        <h1>{country.name.common}</h1>
-        <div>Capital: {country.capital}</div>
-        <div>Area: {country.area}</div>
-        <h2>Languages:</h2>
-        <ul>
-          {languages.map(language => (
-            <li key={language}>{language}</li>
-          ))}
-        </ul>
-        <img src={country.flags.png} />
+        <CountryInfo country={country} />
+        <Weather country={country} weather={weather} />
       </div>
     );
   }

@@ -46,6 +46,7 @@ const Countries = ({ countries, countryFilter, showHandler }) => {
           key={country.name.official}
           country={country}
           singleCountry={true}
+          showHandler={() => showHandler(country)}
         />
       </div>
     );
