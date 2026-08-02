@@ -1,2 +1,3 @@
 # mooc-Fullstack
-mooc fullstack course to master full stack development
+Mooc fullstack course for project-based learning. 
+Help strengthen front-end, back-end, APIs, CI/CD, Containers, and databases
